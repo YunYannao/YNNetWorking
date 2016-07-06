@@ -1,0 +1,27 @@
+//
+//  YNNetworking_iOS_Prifix.pch
+//  YNNetWorking
+//
+//  Created by 员延孬 on 16/7/1.
+//  Copyright © 2016年 KeviewYun. All rights reserved.
+//
+#import <Availability.h>
+#include <sys/time.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#endif
+
+
+#ifndef YNNetworking_iOS_Prifix_pch
+#define YNNetworking_iOS_Prifix_pch
+
+
+
+#endif /* YNNetworking_iOS_Prifix_pch */
