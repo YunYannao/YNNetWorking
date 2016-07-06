@@ -16,6 +16,7 @@
 
 @implementation YNNetAPI_Manager
 
+#pragma mark---share
 +(instancetype)shareManager{
     static YNNetAPI_Manager * manager=nil;
     static dispatch_once_t onceToken;
@@ -43,6 +44,7 @@
     return params;
 }
 
+/**      example     **/
 -(void)getHomePageProductListWithStart:(NSString*)start withLength:(NSString*)length  withComplationBlock:(CallBackBlock)block{
     [[YNNet_APIClient shareClient] requestJsonDataWithPath:@"/api/product/IndexProList" withParams:[self setParamsWithParamsBody:@{@"Start":start, @"Length":length}] withMethodType:Post shouldCache:YES andBlock:^(id data, NSError *error) {
         if (data) {

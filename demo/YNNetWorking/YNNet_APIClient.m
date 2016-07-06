@@ -26,7 +26,7 @@
 }
 
 
--(id)handleResponse:(id)responseJSON autoShowError:(BOOL)autoShowError{
+-(NSError*)handleResponse:(id)responseJSON autoShowError:(BOOL)autoShowError{
     NSError *error = nil;
     //code为非10000时，表示有错
     NSNumber *resultCode = [[responseJSON valueForKeyPath:@"Head"] objectForKey:@"ErrorCode"];
@@ -47,7 +47,9 @@
     }
     self.requestSerializer.cachePolicy=NSURLRequestReloadIgnoringLocalCacheData;
     
-    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    AFJSONResponseSerializer * res = [AFJSONResponseSerializer serializer];
+    res.removesKeysWithNullValues=YES;
+    self.responseSerializer=res;
     self.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/plain", @"text/javascript", @"text/json", @"text/html", nil];
     
     self.requestSerializer.timeoutInterval=6;
@@ -93,9 +95,10 @@
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 DebugLog(@"\n===========response===========\n%@:\n%@", aPath, responseObject);
-                id error=[self handleResponse:responseObject autoShowError:autoShowError];
+                NSError *  error=[self handleResponse:responseObject autoShowError:autoShowError];
                 if (error) {
                     //get请求失败 从缓存中读取数据
+                    [NSObject showHudTipStr:error.localizedDescription];
                     responseObject=[NSObject loadResponseWithPath:localPath];
                     block(responseObject,error);
                     DebugLog(@"\n===========response===========\n%@:\n%@:\n%@", responseObject, aPath,error);
@@ -124,8 +127,9 @@
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 DebugLog(@"\n===========response===========\n%@:\n%@", aPath, responseObject);
-                id error = [self handleResponse:responseObject autoShowError:autoShowError];
+                NSError * error = [self handleResponse:responseObject autoShowError:autoShowError];
                 if (error) {
+                    [NSObject showHudTipStr:error.localizedDescription];
                     responseObject=[NSObject loadResponseWithPath:localPath];
                     block(responseObject,error);
                     DebugLog(@"\n===========response===========\n%@:\n%@:\n%@", responseObject, aPath,error);
@@ -149,7 +153,7 @@
         }
         case Delete:{
             [self DELETE:aPath parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                id error = [self handleResponse:responseObject autoShowError:autoShowError];
+                NSError * error = [self handleResponse:responseObject autoShowError:autoShowError];
                 if (error) {
                     block(nil, error);
                 }else{

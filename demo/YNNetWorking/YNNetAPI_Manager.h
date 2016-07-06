@@ -14,10 +14,15 @@
 typedef void(^CallBackBlock)(id data,NSError * error);
 
 @interface YNNetAPI_Manager : NSObject
+
+//单例
 +(instancetype)shareManager;
 
-#pragma mark---carList
+//请求参数拼接
+-(NSDictionary*)setParamsWithParamsBody:(NSDictionary *)paramaterBodyDic;
 
+//eg 获取车辆产品列表
 -(void)getHomePageProductListWithStart:(NSString*)start withLength:(NSString*)length  withComplationBlock:(CallBackBlock)block;
+
 
 @end

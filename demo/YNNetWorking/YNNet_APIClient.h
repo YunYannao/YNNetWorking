@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger,NetRequestType){
 
 +(instancetype)shareClient;
 
--(id)handleResponse:(id)responseJSON autoShowError:(BOOL)autoShowError;
+-(NSError*)handleResponse:(id)responseJSON autoShowError:(BOOL)autoShowError;
 
 - (void)requestJsonDataWithPath:(NSString *)aPath
                      withParams:(NSDictionary*)params
